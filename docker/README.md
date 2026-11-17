@@ -6,18 +6,24 @@ Docker configuration to run LittleLink in a container.
 
 - `Dockerfile`: Defines how the image is built using nginx:alpine
 - `compose.yaml`: Configuration for Docker Compose with volumes for development
-- `.dockerignore`: Excludes unnecessary files from the image
+- `nginx.conf`: Configures nginx, security headers, and static-asset caching
+- `../.dockerignore`: Keeps repository metadata and local configuration out of the build context
 
 ## Technical Details
 
 ### Base Image
 - Uses `nginx:alpine` for minimal image size (~20MB)
+- Copies only the pages and static assets needed to serve the site
 - Includes gzip compression for static files
-- Optimized cache configuration for CSS, JavaScript, and images
+- Caches CSS, JavaScript, images, and fonts
 - Configured to forward nginx logs to Docker log collector
+- Sets a restrictive Content Security Policy and standard browser security headers
+- Denies requests for dotfiles
+
+These nginx headers apply to the Docker deployment. Configure equivalent headers separately when hosting on another platform. If your fork loads third-party assets, allow only the required origins in the Content Security Policy.
 
 ### Volumes and Ports
-- Mounts the project root directory as a volume for live development
+- Mounts the page files and asset directories as read-only volumes for live development
 - Exposes port 80 in the container, mapped to 8080 on the host
 
 ## Common Use Cases
@@ -74,7 +80,7 @@ docker compose -f docker/compose.yaml up
 ```
 
 This configuration:
-- Mounts local files as a volume, so changes are reflected immediately
+- Mounts only the pages and asset directories as read-only volumes, so changes are reflected immediately without exposing repository metadata
 - Requires manual browser refresh to see changes
 - Is ideal for testing and development
 

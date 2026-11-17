@@ -1,0 +1,34 @@
+# Repository and tooling metadata
+.git
+.github
+.do
+.gitignore
+.pre-commit-config.yaml
+.dockerignore
+.DS_Store
+**/.DS_Store
+.vscode
+.idea
+.devcontainer
+
+# Documentation and deployment configuration
+README*
+LICENSE*
+VERSION*
+CNAME
+wrangler.toml
+docker/Dockerfile
+docker/README.md
+docker/compose.yaml
+
+# Local configuration and generated files
+.env
+.env.*
+**/.env
+**/.env.*
+*.log
+**/*.log
+**/__pycache__
+**/.venv
+**/bin
+**/obj
